@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--  NO permitir Zoom en movil-->
+    <!--<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1, minimum-scale=1">-->
+    <!-- SI permitir Zoom en movil-->
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1">
+    <title>Device.js</title>
+
+    <!-- Cargar como refer o module -->
+    <script src="Device.min.js"></script>
+
+    <style>
+        
+        body {
+            padding: 0;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            background-color: #4A4A4A;
+        }
+
+        body::-webkit-scrollbar {
+            width: auto;
+        }
+
+        body::-webkit-scrollbar-track {
+            background: #202020;
+        }
+        body::-webkit-scrollbar-thumb {
+            background-color: #727272 ;
+        }
+
+        table {
+            text-align: center;
+            width: 320px;
+            border-collapse: collapse;
+            
+            color: #fff;
+            border: 0px solid transparent;
+        }
+
+        th {
+            background-color: #BA3862;
+            height: 25px;
+        }
+
+        td  {
+            background-color: #595759;
+            height: 22px;
+        }
+
+        td[id] {
+            font-weight: bolder;
+            color: #28c4b0;
+        }
+
+        button {
+            color: #222;
+            background-color: transparent;
+            height: 35px;
+            border-color:  #28c4b0;
+            color:  #28c4b0;
+            font-weight: bolder;
+            outline: none;
+        }
+
+        h1 {
+            color: #71DED0;  
+            font-size: 38px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <h1>Device.js</h1>
+
+    <table border="1">
+        <tr>
+            <th colspan="3">Type</th>
+        </tr>
+        <tr>
+            <td>Mobile</td>
+            <td>Tablet</td>
+            <td>Desktop</td>
+        </tr>
+        <tr>
+            <td id="isMobile"></td>
+            <td id="isTablet"></td>
+            <td id="isDesktop"></td>
+        </tr>
+    </table>
+
+    <br>
+
+    <table border="1">
+        <tr>
+            <th colspan="3">Size</th>
+        </tr>
+        <tr>
+            <td></td>
+            <td>width</td>
+            <td>height</td>
+        </tr>
+        <tr>
+            <td>resolution</td>
+            <td id="wresolution"></td>
+            <td id="hresolution"></td>
+        </tr>
+        <tr>
+            <td>screenViewport</td>
+            <td id="wscreenViewport"></td>
+            <td id="hscreenViewport"></td>
+        </tr>
+        <tr>
+            <td>innerViewport</td>
+            <td id="winnerViewport"></td>
+            <td id="hinnerViewport"></td>
+        </tr>
+        <tr>
+            <td>outerViewport</td>
+            <td id="wouterViewport"></td>
+            <td id="houterViewport"></td>
+        </tr>
+        <tr>
+            <td>clientViewport</td>
+            <td id="wclientViewport"></td>
+            <td id="hclientViewport"></td>
+        </tr>
+        <tr>
+            <td>availViewport</td>
+            <td id="wavailViewport"></td>
+            <td id="havailViewport"></td>
+        </tr>
+        <tr>
+            <td>vw - vh</td>
+            <td id="vw"></td>
+            <td id="vh"></td>
+        </tr>
+    </table>
+
+    <br>
+
+    <table border="1">
+        <tr>
+            <th colspan="2">addressBarSize</th>
+        </tr>
+        <tr>
+            <td>width</td>
+            <td>height</td>
+        </tr>
+        <tr>
+            <td id="waddressBarSize"></td>
+            <td id="haddressBarSize"></td>
+        </tr>
+    </table>
+
+    <br>
+
+    <table border="1">
+        <tr>
+            <td style="width: 55%;">open keyboard (mobile)</td>
+            <td> <input style="width: 90%;"> </td>
+        </tr>
+        <tr>
+            
+        </tr>
+    </table>
+
+    <br>
+
+    <table border="1">
+        <tr>
+            <th colspan="3">screenSize (don't use)</th>
+        </tr>
+        <tr>
+            <td>width</td>
+            <td>height</td>
+            <td>diagonal</td>
+        </tr>
+        <tr>
+            <td id="wscreenSize"></td>
+            <td id="hscreenSize"></td>
+            <td id="dscreenSize"></td>
+        </tr>
+    </table>
+
+    <br>
+
+    <table border="1">
+        <tr>
+            <th colspan="2">orientation</th>
+        </tr>
+        <tr>
+            <td>angle</td>
+            <td>type</td>
+        </tr>
+        <tr>
+            <td id="angle"></td>
+            <td id="type"></td>
+        </tr>
+    </table>
+
+    <br>
+
+    <table border="1">
+        <tr>
+            <th colspan="2">Miscelaneous</th>
+        </tr>
+        <tr>
+            <td>pixelRatio</td>
+            <td id="pixelRatio"></td>
+        </tr>
+        <tr>
+            <td>aspectRatio</td>
+            <td id="aspectRatio"></td>
+        </tr>
+        <tr>
+            <td>Connection</td>
+            <td id="isSafe"></td>
+            
+        </tr>
+        <tr>
+            <td>Fullscreen</td>
+            <td id="isFullScreen"></td>
+        </tr>
+
+    </table>
+
+    <br>
+
+    <button id="button" onclick="Device.fullScreen()">
+        go fullscreen
+    </button>
+
+    <div style="height: 50px;">
+
+    </div>
+
+    <script>
+
+        var Setter = function() {
+            isMobile.innerText = Device.isMobile;
+            isTablet.innerText = Device.isTablet;
+            isDesktop.innerText = Device.isDesktop;
+
+            if(Device.isDesktop) {
+                button.disabled = true;
+                button.innerText = 'press F11 to go fullscreen';
+            }
+            else
+                button.disabled = false;
+            
+            wresolution.innerText = Device.resolution.width + 'px';
+            hresolution.innerText = Device.resolution.height + 'px';
+            wscreenViewport.innerText = Device.screenViewport.width + 'px';
+            hscreenViewport.innerText = Device.screenViewport.height + 'px';
+            winnerViewport.innerText = Device.innerViewport.width + 'px';
+            hinnerViewport.innerText = Device.innerViewport.height + 'px';
+            wouterViewport.innerText = Device.outerViewport.width + 'px';
+            houterViewport.innerText = Device.outerViewport.height + 'px';
+            wclientViewport.innerText = Device.clientViewport.width + 'px';
+            hclientViewport.innerText = Device.clientViewport.height + 'px';
+            wavailViewport.innerText = Device.availViewport.width + 'px';
+            havailViewport.innerText = Device.availViewport.height + 'px';
+            vw.innerText = ((Device.vw * 100) | 0) / 100 + 'px';
+            vh.innerText = ((Device.vh * 100) | 0) / 100 + 'px';
+
+            waddressBarSize.innerText = Device.addressBarSize.width + 'px';
+            haddressBarSize.innerText = Device.addressBarSize.height + 'px';
+
+            wscreenSize.innerText = Device.screenSize.width + 'inch';
+            hscreenSize.innerText = Device.screenSize.height + 'inch';
+            dscreenSize.innerText = Device.screenSize.diagonal + 'inch';
+
+            angle.innerText = Device.orientation.angle + 'º';
+            type.innerText = Device.orientation.type;
+
+            pixelRatio.innerText = Device.pixelRatio;
+            aspectRatio.innerText = Device.aspectRatio;
+            isSafe.innerText = Device.isSafeConnection? 'secure' : 'insecure';
+            isFullScreen.innerText = Device.isFullScreen;
+
+            if(Device.isFullScreen && !button.disabled)
+                button.innerText = 'exit fullscreen';
+            else if(!button.disabled)
+                button.innerText = 'go fullscreen';
+            else if(Device.isFullScreen)
+                button.innerText = 'press F11 to exit fullscreen';
+        }
+
+        Setter();
+
+        var inserted = null;
+
+        var debounced = function() {
+            if(inserted)
+                clearTimeout(inserted);
+            
+            inserted = setTimeout(function() { Setter(); }, 150);
+        }
+
+        window.onresize = debounced;
+
+    </script>
+    
+</body>
+</html>
