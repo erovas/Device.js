@@ -6,7 +6,7 @@ Pequeña librería de ayuda, para obtener algunas características del dispositi
 
 ## ¿Cómo utilizarlo?
 
-Esta libreria debe ser cargada de modo tal que el "body" del documento esté disponible, ya sea cargando la libreria como "defer", "module".
+Esta librería debe ser cargada de modo tal que el "body" del documento esté disponible, ya sea cargando la librería como "defer", "module".
 
 ``` html
 <script defer src="Device.min.js"></script>
@@ -27,7 +27,7 @@ Esta libreria debe ser cargada de modo tal que el "body" del documento esté dis
 </script>
 ```
 
- o siguiendo el mismo esquema que está en el index.html de este repositorio
+ O siguiendo el mismo esquema que está en el index.html de este repositorio.
 
 ``` html
 <head>
@@ -43,7 +43,7 @@ Esta libreria debe ser cargada de modo tal que el "body" del documento esté dis
 
 ## API
 
-| Metodo / Propiedad       | Description                                                                                             |
+| Método / Propiedad       | Descripción                                                                                             |
 |--------------------------|---------------------------------------------------------------------------------------------------------|
 | `isMobile`               | true si el dispositivo es de tipo móvil o tablet |
 | `isTablet`               | true si el dispositivo es de tipo tablet |
