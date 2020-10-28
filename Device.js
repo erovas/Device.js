@@ -39,7 +39,8 @@ Object.defineProperty(window, 'Device', {
     
             'isMobile': {
                 get: function(){
-                    return screen.availHeight === screen.height && screen.availWidth === screen.width && window.outerHeight - window.innerHeight === 0;
+                    const first = screen.availHeight === screen.height && screen.availWidth === screen.width && window.outerHeight - window.innerHeight === 0;
+                    return first ||  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
                 }
             },
             'isTablet': {
@@ -88,6 +89,8 @@ Object.defineProperty(window, 'Device', {
                         debounced();
                         //return div.offsetHeight - document.documentElement.clientHeight;
                         var height = div.offsetHeight - window.outerHeight;
+                        //Corrección para navegador de Xiaomi
+                        height = height < 0? height * -1 : height;
                         
                         if(this.isFullScreen)
                             height = 0;
