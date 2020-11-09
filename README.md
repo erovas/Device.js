@@ -50,6 +50,8 @@ Esta librería debe ser cargada de modo tal que el "body" del documento esté di
 | `isDesktop`              | true si el dispositivo es de tipo escritorio |
 | `isSafeConnection`  | true si la conexión es de protocolo HTTPS o FILE |
 | `isFullScreen`| true si el dispositivo está en modo pantalla completa |
+| `isLandscape`| true si el dispositivo está en modo pantalla landscape |
+| `isPortrait`| true si el dispositivo está en modo pantalla portrait |
 | `orientation`| devuelve un objeto de la forma { angle: 0º, type: 'landscape-primary' } en donde "angle" es el angulo que tiene el navegador, "type" el nombre de tipo de orientación |
 | `addressBarSize`| devuelve un objeto de la forma { width, height } el cual son los valores numericos en pixeles de la barra de direcciones del navegador |
 | `pixelRatio` | devuelve el pixel ratio del navegador |
