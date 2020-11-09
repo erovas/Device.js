@@ -12,25 +12,35 @@ Object.defineProperty(window, 'Device', {
 
         // "div" de referencia
         var div = document.createElement('div');
+        div.setAttribute('device-id', 'reference');
         div.style.position = "absolute";
-        div.style.zIndex = "-1";
+        div.style.zIndex = "-100";
         div.style.height = "100vh";
         div.style.width = "100vw";
         div.style.top = "0";
         div.style.left = "0";
+        div.style.border = "0";
+        
+        var inserted = false;
 
-        var inserted = null;
+        if(document.body) {
+            document.body.appendChild(div);
+            inserted = null;
+        }        
 
         // Anti rebote, por si se utiliza varios metodos que requieran usar el "div" de referencia
-        var debounced = function() {
-            if(inserted)
-                clearTimeout(inserted);
+        var insertDiv = function() {
+            
+            if(inserted === null)
+                insertDiv = function() {};
             
             document.body.appendChild(div);
-            
-            inserted = setTimeout(function() {
-                document.body.removeChild(div);
-            }, 100);
+            inserted = null;
+        }
+
+        var isApple = function(){
+            //return ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod' ].includes(navigator.platform) || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+            return /iPad Simulator|iPhone Simulator|iPod Simulator|iPad|iPhone|iPod/i.test(navigator.platform) || /Mac/i.test(navigator.userAgent);
         }
 
         var Device = {}
@@ -39,8 +49,10 @@ Object.defineProperty(window, 'Device', {
     
             'isMobile': {
                 get: function(){
-                    const first = screen.availHeight === screen.height && screen.availWidth === screen.width && window.outerHeight - window.innerHeight === 0;
-                    return first ||  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                    //Solo funciona en android para navegadores basados en Crohmium
+                    //var first = screen.availHeight === screen.height && screen.availWidth === screen.width && window.outerHeight - window.innerHeight === 0;
+                    
+                    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
                 }
             },
             'isTablet': {
@@ -64,19 +76,37 @@ Object.defineProperty(window, 'Device', {
                     return (window.innerHeight >= screen.height || window.innerHeight === screen.height - 1) && window.innerWidth === screen.width;
                 }
             },
+            'isLandscape': {
+                get: function(){
+                    var horizontal = screen.width > screen.height;
+                    if(isApple()){
+                        var cvp = this.clientViewport;
+                        horizontal = cvp.width > cvp.height;
+                    }
+
+                    return horizontal;
+                }
+            },
+            'isPortrait': {
+                get: function(){
+                    return !this.isLandscape;
+                }
+            },
             'orientation': {
                 get: function(){
                     if(screen.orientation)
                         return screen.orientation;
 
-                    //polyfill para IE y EDGE no chromiun
-                    var orientation = { 
-                        angle: 0,
+                    var mobile = this.isMobile;
+
+                    //polyfill para IE, EDGE no chromiun y iOS/MAC
+                    var orientation = {
+                        angle: mobile ? 90 : 0,
                         type: 'landscape-primary'
                     }
 
-                    if(screen.height > screen.width){
-                        orientation.angle = 90;
+                    if(this.isPortrait){
+                        orientation.angle = mobile ? 0 : 90;
                         orientation.type = 'portrait-primary';
                     }
 
@@ -86,11 +116,11 @@ Object.defineProperty(window, 'Device', {
             'addressBarSize': {
                 get: function(){
                     if(this.isMobile){
-                        debounced();
+                        insertDiv();
                         //return div.offsetHeight - document.documentElement.clientHeight;
                         var height = div.offsetHeight - window.outerHeight;
                         //Corrección para navegador de Xiaomi
-                        height = height < 0? height * -1 : height;
+                        height = height < 0 ? height * -1 : height;
                         
                         if(this.isFullScreen)
                             height = 0;
@@ -153,7 +183,7 @@ Object.defineProperty(window, 'Device', {
                         };
 
                     // "isMobile"
-                    debounced();
+                    insertDiv();
                     return {
                         width: div.offsetWidth,
                         height: div.offsetHeight
@@ -191,7 +221,7 @@ Object.defineProperty(window, 'Device', {
                         return window.innerHeight / 100;
 
                     // "isMobile"
-                    debounced();
+                    insertDiv();
                     //return div.offsetHeight / 100;
                     return parseFloat(window.getComputedStyle(div).height) / 100;
                 }
@@ -202,7 +232,7 @@ Object.defineProperty(window, 'Device', {
                         return  window.innerWidth / 100;
 
                     // "isMobile"
-                    debounced();
+                    insertDiv();
                     //return  div.offsetWidth / 100;
                     return parseFloat(window.getComputedStyle(div).width) / 100;
                 }
