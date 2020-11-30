@@ -125,8 +125,13 @@ Object.defineProperty(window, 'Device', {
                         if(this.isFullScreen)
                             height = 0;
 
+                        var width = screen.width;
+
+                        if(this.isMobile && isApple() && this.isLandscape)
+                            width = screen.height;
+
                         return {
-                            width: screen.width,
+                            width: width,
                             height: height
                         }
                     }
@@ -168,10 +173,18 @@ Object.defineProperty(window, 'Device', {
             },
             'screenViewport': {
                 get: function(){
-                    return {
+
+                    const output = {
                         width: screen.width,
                         height: screen.height
                     }
+
+                    if(this.isMobile && isApple() && this.isLandscape) {
+                        output.width = screen.height;
+                        output.height = screen.width;
+                    }
+
+                    return output;
                 }
             },
             'innerViewport': {
@@ -209,10 +222,18 @@ Object.defineProperty(window, 'Device', {
             },
             'availViewport': {
                 get: function(){
-                    return {
+
+                    const output = {
                         width: screen.availWidth,
                         height: screen.availHeight
                     }
+
+                    if(this.isMobile && isApple() && this.isLandscape) {
+                        output.width = screen.availHeight;
+                        output.height = screen.availWidth;
+                    }
+
+                    return output;
                 }
             },
             'vh': {
@@ -270,9 +291,7 @@ Object.defineProperty(window, 'Device', {
                     var realHeight = heightPx / in1;
                     var hypotenuse = Math.sqrt(realWidth*realWidth + realHeight*realHeight);
 
-                    //setTimeout(() => { Div.remove(); }, 100);
                     setTimeout(function() { 
-                        //Div.remove(); 
                         document.body.removeChild(Div);
                     }, 100);
                     
