@@ -15,8 +15,8 @@ Object.defineProperty(window, 'Device', {
         div.setAttribute('device-id', 'reference');
         div.style.position = "absolute";
         div.style.zIndex = "-100";
-        div.style.height = "100vh";
-        div.style.width = "100vw";
+        div.style.height = "10vh";
+        div.style.width = "10vw";
         div.style.top = "0";
         div.style.left = "0";
         div.style.border = "0";
@@ -118,7 +118,7 @@ Object.defineProperty(window, 'Device', {
                     if(this.isMobile){
                         insertDiv();
                         //return div.offsetHeight - document.documentElement.clientHeight;
-                        var height = div.offsetHeight - window.outerHeight;
+                        var height = (div.offsetHeight * 10) - window.outerHeight;
                         //Corrección para navegador de Xiaomi
                         height = height < 0 ? height * -1 : height;
                         
@@ -198,8 +198,8 @@ Object.defineProperty(window, 'Device', {
                     // "isMobile"
                     insertDiv();
                     return {
-                        width: div.offsetWidth,
-                        height: div.offsetHeight
+                        width: div.offsetWidth * 10,
+                        height: div.offsetHeight * 10
                     }
                 }
             },
@@ -244,7 +244,7 @@ Object.defineProperty(window, 'Device', {
                     // "isMobile"
                     insertDiv();
                     //return div.offsetHeight / 100;
-                    return parseFloat(window.getComputedStyle(div).height) / 100;
+                    return parseFloat(window.getComputedStyle(div).height) / 10;
                 }
             },
             'vw': {
@@ -255,7 +255,7 @@ Object.defineProperty(window, 'Device', {
                     // "isMobile"
                     insertDiv();
                     //return  div.offsetWidth / 100;
-                    return parseFloat(window.getComputedStyle(div).width) / 100;
+                    return parseFloat(window.getComputedStyle(div).width) / 10;
                 }
             },
             'aspectRatio': {
