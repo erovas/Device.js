@@ -342,6 +342,15 @@ Object.defineProperty(window, 'Device', {
                             that.openFullScreen();
                     }
                 }
+            },
+            'workers': {
+                get: function(){
+                    var workers = window.navigator.hardwareConcurrency;
+                    if(!workers)
+                        workers = 1;
+                    
+                    return workers;
+                }
             }
         });
 
