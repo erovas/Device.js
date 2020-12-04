@@ -174,7 +174,7 @@ Object.defineProperty(window, 'Device', {
             'screenViewport': {
                 get: function(){
 
-                    const output = {
+                    var output = {
                         width: screen.width,
                         height: screen.height
                     }
@@ -223,7 +223,7 @@ Object.defineProperty(window, 'Device', {
             'availViewport': {
                 get: function(){
 
-                    const output = {
+                    var output = {
                         width: screen.availWidth,
                         height: screen.availHeight
                     }
