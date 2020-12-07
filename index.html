@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <link rel="icon" href="Device-favicon.png" type="image/png" sizes="16x16">
+
     <!--  NO permitir Zoom en movil-->
     <!--<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1, minimum-scale=1">-->
     <!-- SI permitir Zoom en movil-->
@@ -163,6 +166,17 @@
 
     <table border="1">
         <tr>
+            <th colspan="2">scrollBarWidth</th>
+        </tr>
+        <tr>
+            <td id="scrollBarWidth"></td>
+        </tr>
+    </table>
+
+    <br>
+
+    <table border="1">
+        <tr>
             <td style="width: 55%;">open keyboard (mobile)</td>
             <td> <input style="width: 90%;"> </td>
         </tr>
@@ -284,6 +298,8 @@
 
             waddressBarSize.innerText = Device.addressBarSize.width + 'px';
             haddressBarSize.innerText = Device.addressBarSize.height + 'px';
+
+            scrollBarWidth.innerText = Device.scrollBarWidth + 'px';
 
             wscreenSize.innerText = Device.screenSize.width + 'inch';
             hscreenSize.innerText = Device.screenSize.height + 'inch';

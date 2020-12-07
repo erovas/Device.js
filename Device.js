@@ -13,13 +13,17 @@ Object.defineProperty(window, 'Device', {
         // "div" de referencia
         var div = document.createElement('div');
         div.setAttribute('device-id', 'reference');
-        div.style.position = "absolute";
-        div.style.zIndex = "-100";
-        div.style.height = "10vh";
-        div.style.width = "10vw";
-        div.style.top = "0";
-        div.style.left = "0";
-        div.style.border = "0";
+        div.style.position = 'absolute';
+        div.style.zIndex = '-100';
+        //div.style.zIndex = '10';
+        div.style.height = '10vh';
+        div.style.width = '10vw';
+        //div.style.top = '0';
+        div.style.top = '-100rem';
+        div.style.left = '0';
+        div.style.border = '0';
+        div.style.overflow = 'scroll';
+        //div.style.backgroundColor = 'red';
         
         var inserted = false;
 
@@ -155,6 +159,12 @@ Object.defineProperty(window, 'Device', {
                         width: window.outerWidth,
                         height: height
                     }
+                }
+            },
+            'scrollBarWidth': {
+                get: function(){
+                    insertDiv();
+                    return div.offsetWidth - div.clientWidth
                 }
             },
             'pixelRatio': {

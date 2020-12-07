@@ -54,6 +54,7 @@ Esta librería debe ser cargada de modo tal que el "body" del documento esté di
 | `isPortrait`| true si el dispositivo está en modo pantalla portrait |
 | `orientation`| devuelve un objeto de la forma { angle: 0º, type: 'landscape-primary' } en donde "angle" es el angulo que tiene el navegador, "type" el nombre de tipo de orientación |
 | `addressBarSize`| devuelve un objeto de la forma { width, height } el cual son los valores numericos en pixeles de la barra de direcciones del navegador |
+| `scrollBarWidth` | devuelve un numero que es el ancho en pixeles de la scroll bar del browser |
 | `pixelRatio` | devuelve el pixel ratio del navegador |
 | `resolution` | devuelve un objeto de la forma { width, height } el cual son los valores numericos en pixeles de la resolución real de la pantalla del dispositivo |
 | `screenViewport` | devuelve un objeto de la forma { width, height } el cual son los valores numericos en pixeles del cual el navegador dispone |
@@ -68,6 +69,7 @@ Esta librería debe ser cargada de modo tal que el "body" del documento esté di
 | `openFullScreen()` | metodo que pone en pantalla completa el navegador |
 | `closeFullScreen()` | metodo que pone sale de la pantalla completa el navegador |
 | `fullScreen()` | metodo toggle que pone o sale de la pantalla completa el navegador |
+| `workers`| devuelve un numero que es la cantidad de workers que posee el dispositivo |
 
 
 ## Autores
