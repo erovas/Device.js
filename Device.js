@@ -355,11 +355,7 @@ Object.defineProperty(window, 'Device', {
             },
             'workers': {
                 get: function(){
-                    var workers = window.navigator.hardwareConcurrency;
-                    if(!workers)
-                        workers = 1;
-                    
-                    return workers;
+                    return window.navigator.hardwareConcurrency || 2;
                 }
             }
         });
