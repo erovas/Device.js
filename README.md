@@ -71,6 +71,9 @@ This library must be loaded in such a way that the "body" of the document is ava
 | `fullScreen()` | toggle method that puts or leaves the browser full screen |
 | `workers`| returns a number that is the number of workers that the device has |
 
+## Demo
+
+https://erovas.github.io/Device.js/
 
 ## Authors
 
@@ -155,6 +158,9 @@ Esta librería debe ser cargada de modo tal que el "body" del documento esté di
 | `fullScreen()` | método toggle que pone o sale de la pantalla completa el navegador |
 | `workers`| devuelve un numero que es la cantidad de workers que posee el dispositivo |
 
+## Demo
+
+https://erovas.github.io/Device.js/
 
 ## Autores
 
