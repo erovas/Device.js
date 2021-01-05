@@ -3,8 +3,8 @@
  * Pequeña librería de ayuda, para obtener algunas características del dispositivo, como los diferentes 
  * anchos, altos, orientación, pantalla completa, móvil o escritorio, alto de la barra de navegación, etc.
  * [Back-compatibility: IE9+]
- * (c) 2020 Emanuel Rojas Vásquez
- * MIT License
+ * Copyright (c) 2021, Emanuel Rojas Vásquez
+ * BSD 3-Clause License
  * https://github.com/erovas/Device.js
  */
 Object.defineProperty(window, 'Device', {
