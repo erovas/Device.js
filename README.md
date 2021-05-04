@@ -72,6 +72,7 @@ Deleted:
 - openFullScreen()
 - closeFullScreen()
 - fullScreen()
+- aspectRatio
 
 Modified:
 - addressBarSize TO addressBar
@@ -166,6 +167,7 @@ Eliminado:
 - openFullScreen()
 - closeFullScreen()
 - fullScreen()
+- aspectRatio
 
 Modificado:
 - addressBarSize A addressBar
