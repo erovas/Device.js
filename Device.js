@@ -152,16 +152,17 @@
         },
 
         get scrollBar(){
+            var mobile = this.isMobile;
             return {
                 X: {
                     width: innerWidth,
-                    height: innerHeight - DOC_ELEMENT.clientHeight,
+                    height: mobile? 0 : innerHeight - DOC_ELEMENT.clientHeight,
                     position: DOC_ELEMENT.scrollLeft,
                     maxPosition: DOC_ELEMENT.scrollWidth - DOC_ELEMENT.clientWidth
                 },
 
                 Y: {
-                    width: innerWidth - DOC_ELEMENT.clientWidth,
+                    width: mobile? 0 : innerWidth - DOC_ELEMENT.clientWidth,
                     height: innerHeight,
                     position: DOC_ELEMENT.scrollTop,
                     maxPosition: DOC_ELEMENT.scrollHeight - DOC_ELEMENT.clientHeight
