@@ -132,7 +132,7 @@
 
     checkScrollX.onchange = function(){
         if(checkScrollX.checked)
-            BODY.style.width = '2000px';
+            BODY.style.width = '4000px';
         else
             BODY.style.width = '';
 
