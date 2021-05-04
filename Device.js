@@ -70,7 +70,8 @@
 
         get resolution(){
             var dpr = this.pixelRatio;
-            return { width: (SCREEN.width * dpr) | 0, height: (SCREEN.height * dpr) | 0 }
+            var screen_vp = this.screenViewport;
+            return { width: (screen_vp.width * dpr) | 0, height: (screen_vp.height * dpr) | 0 }
         },
 
         get screenViewport(){
