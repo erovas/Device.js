@@ -2,89 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <link rel="icon" href="Device-favicon.png" type="image/png" sizes="16x16">
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!--  NO permitir Zoom en movil-->
     <!--<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1, minimum-scale=1">-->
     <!-- SI permitir Zoom en movil-->
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1">
+
     <title>Device.js</title>
 
-    <!-- Cargar como refer o module -->
-    <script src="Device.js"></script>
+    <link rel="icon" href="Device-favicon.png" type="image/png" sizes="16x16">
+    <link href="normalize.min.css" rel="stylesheet">
+    <link href="index.css" rel="stylesheet">
 
-    <style>
-        
-        body {
-            padding: 0;
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            background-color: #4A4A4A;
-        }
-
-        body::-webkit-scrollbar {
-            width: auto;
-        }
-
-        body::-webkit-scrollbar-track {
-            background: #202020;
-        }
-        body::-webkit-scrollbar-thumb {
-            background-color: #727272 ;
-        }
-
-        table {
-            text-align: center;
-            width: 320px;
-            border-collapse: collapse;
-            
-            color: #fff;
-            border: 0px solid transparent;
-        }
-
-        th {
-            background-color: #BA3862;
-            height: 25px;
-        }
-
-        td  {
-            background-color: #595759;
-            height: 22px;
-        }
-
-        td[id] {
-            font-weight: bolder;
-            color: #28c4b0;
-        }
-
-        button {
-            color: #222;
-            background-color: transparent;
-            height: 35px;
-            border-color:  #28c4b0;
-            color:  #28c4b0;
-            font-weight: bolder;
-            outline: none;
-        }
-
-        h1 {
-            color: #71DED0;  
-            font-size: 45px;
-        }
-    </style>
-
+    <script src="Device.min.js"></script>
 </head>
 <body>
 
-    <a href="https://github.com/erovas/Device.js" style="text-decoration: none;">
+    <a href="https://github.com/erovas/Device.js">
         <h1>Device.js</h1>
     </a>
 
-    <table border="1">
+    <table>
         <tr>
             <th colspan="3">Type</th>
         </tr>
@@ -100,11 +38,9 @@
         </tr>
     </table>
 
-    <br>
-
-    <table border="1">
+    <table>
         <tr>
-            <th colspan="3">Size</th>
+            <th colspan="3">Viewports</th>
         </tr>
         <tr>
             <td></td>
@@ -148,11 +84,9 @@
         </tr>
     </table>
 
-    <br>
-
-    <table border="1">
+    <table>
         <tr>
-            <th colspan="2">addressBarSize</th>
+            <th colspan="2">addressBar</th>
         </tr>
         <tr>
             <td>width</td>
@@ -164,20 +98,50 @@
         </tr>
     </table>
 
-    <br>
-
-    <table border="1">
+    <table>
         <tr>
-            <th colspan="2">scrollBarWidth</th>
+            <th colspan="3">scrollBar</th>
         </tr>
         <tr>
-            <td id="scrollBarWidth"></td>
+            <td></td>
+            <td>X</td>
+            <td>Y</td>
+        </tr>
+        <tr>
+            <td>width</td>
+            <td id="scrollBarXWidth"></td>
+            <td id="scrollBarYWidth"></td>
+        </tr>
+        <tr>
+            <td>height</td>
+            <td id="scrollBarXHeight"></td>
+            <td id="scrollBarYHeight"></td>
+        </tr>
+        <tr>
+            <td>position</td>
+            <td id="scrollBarXPosition"></td>
+            <td id="scrollBarYPosition"></td>
+        </tr>
+        <tr>
+            <td>maxPosition</td>
+            <td id="scrollBarXMaxPosition"></td>
+            <td id="scrollBarYMaxPosition"></td>
+        </tr>
+        <tr>
+            <td>ACTIVATED</td>
+            <td>
+                <label>
+                    <input type="checkbox" id="checkScrollX">
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="checkbox" id="checkScrollY"></td>
+                </label>
         </tr>
     </table>
 
-    <br>
-
-    <table border="1">
+    <table>
         <tr>
             <td style="width: 55%;">open keyboard (mobile)</td>
             <td> <input style="width: 90%;"> </td>
@@ -187,11 +151,9 @@
         </tr>
     </table>
 
-    <br>
-
-    <table border="1">
+    <table>
         <tr>
-            <th colspan="3">screenSize (don't use)</th>
+            <th colspan="3">screenSize</th>
         </tr>
         <tr>
             <td>width</td>
@@ -205,9 +167,7 @@
         </tr>
     </table>
 
-    <br>
-
-    <table border="1">
+    <table>
         <tr>
             <th colspan="2">orientation</th>
         </tr>
@@ -221,19 +181,13 @@
         </tr>
     </table>
 
-    <br>
-
-    <table border="1">
+    <table>
         <tr>
             <th colspan="2">Miscelaneous</th>
         </tr>
         <tr>
             <td>pixelRatio</td>
             <td id="pixelRatio"></td>
-        </tr>
-        <tr>
-            <td>aspectRatio</td>
-            <td id="aspectRatio"></td>
         </tr>
         <tr>
             <td>isSafeConnection</td>
@@ -259,94 +213,13 @@
 
     </table>
 
-    <br>
-
-    <button id="button" onclick="Device.fullScreen()">
-        go fullscreen
-    </button>
-
-    <br>
-    <a href="https://github.com/erovas/Device.js" style="color: white; font-weight: bolder;">
+    <a class="anchor-repository" href="https://github.com/erovas/Device.js">
         Github repository
     </a>
 
-    <div style="height: 50px;">
+    <div style="height:50px;"></div>
 
-    </div>
-
-    <script>
-
-        var Setter = function() {
-            isMobile.innerText = Device.isMobile;
-            isTablet.innerText = Device.isTablet;
-            isDesktop.innerText = Device.isDesktop;
-
-            if(Device.isDesktop) {
-                button.disabled = true;
-                button.innerText = 'press F11 to go fullscreen';
-            }
-            else
-                button.disabled = false;
-            
-            wresolution.innerText = Device.resolution.width + 'px';
-            hresolution.innerText = Device.resolution.height + 'px';
-            wscreenViewport.innerText = Device.screenViewport.width + 'px';
-            hscreenViewport.innerText = Device.screenViewport.height + 'px';
-            winnerViewport.innerText = Device.innerViewport.width + 'px';
-            hinnerViewport.innerText = Device.innerViewport.height + 'px';
-            wouterViewport.innerText = Device.outerViewport.width + 'px';
-            houterViewport.innerText = Device.outerViewport.height + 'px';
-            wclientViewport.innerText = Device.clientViewport.width + 'px';
-            hclientViewport.innerText = Device.clientViewport.height + 'px';
-            wavailViewport.innerText = Device.availViewport.width + 'px';
-            havailViewport.innerText = Device.availViewport.height + 'px';
-            vw.innerText = ((Device.vw * 100) | 0) / 100 + 'px';
-            vh.innerText = ((Device.vh * 100) | 0) / 100 + 'px';
-
-            waddressBarSize.innerText = Device.addressBarSize.width + 'px';
-            haddressBarSize.innerText = Device.addressBarSize.height + 'px';
-
-            scrollBarWidth.innerText = Device.scrollBarWidth + 'px';
-
-            wscreenSize.innerText = Device.screenSize.width + 'inch';
-            hscreenSize.innerText = Device.screenSize.height + 'inch';
-            dscreenSize.innerText = Device.screenSize.diagonal + 'inch';
-
-            angle.innerText = Device.orientation.angle + 'º';
-            type.innerText = Device.orientation.type;
-
-            pixelRatio.innerText = Device.pixelRatio;
-            aspectRatio.innerText = Device.aspectRatio;
-            //isSafe.innerText = Device.isSafeConnection? 'secure' : 'insecure';
-            isSafe.innerText = Device.isSafeConnection;
-            isFullScreen.innerText = Device.isFullScreen;
-
-            if(Device.isFullScreen && !button.disabled)
-                button.innerText = 'exit fullscreen';
-            else if(!button.disabled)
-                button.innerText = 'go fullscreen';
-            else if(Device.isFullScreen)
-                button.innerText = 'press F11 to exit fullscreen';
-
-            isPortrait.innerText = Device.isPortrait;
-            isLandscape.innerText = Device.isLandscape;
-            workers.innerText = Device.workers;
-        }
-
-        Setter();
-
-        var inserted = null;
-
-        var debounced = function() {
-            if(inserted)
-                clearTimeout(inserted);
-            
-            inserted = setTimeout(function() { Setter(); }, 150);
-        }
-
-        window.onresize = debounced;
-
-    </script>
+    <script src="index.js"></script>
     
 </body>
 </html>

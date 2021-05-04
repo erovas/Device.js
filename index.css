@@ -1,0 +1,70 @@
+/*html,body{width:100%} /* for ie11 fullscreen API*/
+
+*, *::before, *::after{box-sizing:border-box;}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    background-color: #4A4A4A;
+}
+
+body::-webkit-scrollbar {
+    width: auto;
+}
+
+body::-webkit-scrollbar-track {
+    background: #202020;
+}
+body::-webkit-scrollbar-thumb {
+    background-color: #727272 ;
+}
+
+table {
+    text-align: center;
+    width: 320px;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    
+    color: #fff;
+    border: 0px solid transparent;
+}
+
+th {
+    background-color: hsl(341, 54%, 47%);
+    height: 25px;
+}
+
+td  {
+    background-color: #595759;
+    height: 22px;
+}
+
+td[id] {
+    font-weight: bolder;
+    color: #28c4b0;
+}
+
+h1 {
+    color: #71DED0;  
+    font-size: 45px;
+}
+
+.anchor-repository {
+    color: white; 
+    font-weight: bolder;
+}
+
+label {
+    display: block;
+    height: 100%;
+    cursor: pointer;
+}

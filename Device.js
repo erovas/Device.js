@@ -1,370 +1,224 @@
-/*
- * Device.js v1.0.0
- * Pequeña librería de ayuda, para obtener algunas características del dispositivo, como los diferentes 
- * anchos, altos, orientación, pantalla completa, móvil o escritorio, alto de la barra de navegación, etc.
+/*!
+ * Device.js v1.1.0
  * [Back-compatibility: IE9+]
  * Copyright (c) 2021, Emanuel Rojas Vásquez
  * BSD 3-Clause License
  * https://github.com/erovas/Device.js
  */
-Object.defineProperty(window, 'Device', {
-    value: (function(document) {
+(function(window, document){
 
-        // "div" de referencia
-        var div = document.createElement('div');
-        div.setAttribute('device-id', 'reference');
-        div.style.position = 'absolute';
-        div.style.zIndex = '-100';
-        //div.style.zIndex = '10';
-        div.style.height = '10vh';
-        div.style.width = '10vw';
-        //div.style.top = '0';
-        div.style.top = '-100rem';
-        div.style.left = '0';
-        div.style.border = '0';
-        div.style.overflow = 'scroll';
-        //div.style.backgroundColor = 'red';
-        
-        var inserted = false;
+    var DEVICE = 'Device';
 
-        if(document.body) {
-            document.body.appendChild(div);
-            inserted = null;
-        }        
+    if(window[DEVICE])
+        return console.error(DEVICE + '.js has already been defined');
 
-        // Anti rebote, por si se utiliza varios metodos que requieran usar el "div" de referencia
-        var insertDiv = function() {
+    var HEAD = document.head;
+
+    var DIV_REFERENCE = document.createElement('div');
+    DIV_REFERENCE.style.cssText = 'height:10vh;width:10vw;border:0;padding:0';
+    HEAD.appendChild(DIV_REFERENCE);
+
+    var SCREEN = screen;
+    var ONE_HUNDRED = 100;
+    var DOC_ELEMENT = document.documentElement;
+    var IS_APPLE = /iPad Simulator|iPhone Simulator|iPod Simulator|iPad|iPhone|iPod/i.test(navigator.platform) || /Mac/i.test(navigator.userAgent);
+    var IS_XIAOMI = /XiaoMi|MiuiBrowser/i.test(navigator.userAgent); //Android
+    var IS_FIREFOX_ANDROID = /Firefox/i.test(navigator.userAgent);
+
+    window[DEVICE] = {
+
+    //#region "isSomething"
+
+        get isFullScreen(){
+            return (innerHeight >= SCREEN.height || innerHeight == SCREEN.height - 1) && innerWidth == SCREEN.width;
+        },
+
+        get isSafeConnection(){
+            var protocol = location.protocol;
+            return protocol == 'https:' || protocol == 'file:';
+        },
+
+        get isMobile(){
+            var userAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            var trick = SCREEN.availHeight == SCREEN.height && SCREEN.availWidth == SCREEN.width && outerHeight - innerHeight == 0 && !this.isFullScreen;
+            return userAgent || trick;
+        },
+
+        get isTablet(){
+            return this.isMobile && Math.min(SCREEN.width, SCREEN.height) > 425; //px
+        },
+
+        get isDesktop(){
+            return !this.isMobile;
+        },
+
+        get isLandscape(){
+            if(IS_APPLE){
+                var cvp = this.clientViewport;
+                return cvp.width > cvp.height;
+            }
+            return SCREEN.width > SCREEN.height;
+        },
+
+        get isPortrait(){
+            return !this.isLandscape;
+        },
+
+    //#endregion
+
+    //#region "viewports"
+
+        get resolution(){
+            var dpr = this.pixelRatio;
+            return { width: (SCREEN.width * dpr) | 0, height: (SCREEN.height * dpr) | 0 }
+        },
+
+        get screenViewport(){
+            return this.isMobile && this.isLandscape && IS_APPLE? 
+                { width: SCREEN.height, height: SCREEN.width } 
+                : 
+                { width: SCREEN.width, height: SCREEN.height }
+        },
+
+        get innerViewport(){
+            return this.isMobile? 
+                (
+                    IS_XIAOMI?
+                    this.outerViewport
+                    :
+                    {
+                        width: Math.round(parseFloat(getComputedStyle(DIV_REFERENCE).width) * 10),
+                        height: Math.round(parseFloat(getComputedStyle(DIV_REFERENCE).height) * 10)
+                    }
+                )
+                :
+                { width: innerWidth, height: innerHeight }
+        },
+
+        get outerViewport(){
+            return { width: outerWidth, height: outerHeight }
+        },
+
+        get clientViewport(){
+            return { width: DOC_ELEMENT.clientWidth, height: DOC_ELEMENT.clientHeight }
+        },
+
+        get availViewport(){
+            return this.isMobile && this.isLandscape && IS_APPLE? 
+                { width: SCREEN.availHeight, height: SCREEN.availWidth }
+                :
+                { width: SCREEN.availWidth, height: SCREEN.availHeight }
+        },
+
+        get vh(){
+            return this.isMobile? this.innerViewport.height / ONE_HUNDRED : innerHeight / ONE_HUNDRED
+        },
+
+        get vw(){
+            return this.isMobile? this.innerViewport.width / ONE_HUNDRED : innerWidth / ONE_HUNDRED
+        },
+
+    //#endregion
+
+        get addressBar(){
+            var that = this;
+            var full = that.isFullScreen;
+            var innerViewport = that.innerViewport;
             
-            if(inserted === null)
-                insertDiv = function() {};
-            
-            document.body.appendChild(div);
-            inserted = null;
-        }
+            if(that.isMobile){
 
-        var isApple = function(){
-            //return ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod' ].includes(navigator.platform) || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
-            return /iPad Simulator|iPhone Simulator|iPod Simulator|iPad|iPhone|iPod/i.test(navigator.platform) || /Mac/i.test(navigator.userAgent);
-        }
+                var height = IS_XIAOMI || IS_FIREFOX_ANDROID || IS_APPLE?
+                    innerViewport.height - innerHeight
+                    :
+                    innerViewport.height - outerHeight;
 
-        var Device = {}
-    
-        Object.defineProperties(Device, {
-    
-            'isMobile': {
-                get: function(){
-                    //Solo funciona en android para navegadores basados en Crohmium
-                    //var first = screen.availHeight === screen.height && screen.availWidth === screen.width && window.outerHeight - window.innerHeight === 0;
-                    
-                    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                }
-            },
-            'isTablet': {
-                get: function(){
-                    return this.isMobile && Math.min(screen.width, screen.height) > 425;
-                }
-            },
-            'isDesktop': {
-                get: function(){
-                    return !this.isMobile;
-                }
-            },
-            'isSafeConnection': {
-                get: function(){
-                    var protocol = location.protocol;
-                    return protocol === 'https:' || protocol === 'file:';
-                }
-            },
-            'isFullScreen': {
-                get: function(){
-                    return (window.innerHeight >= screen.height || window.innerHeight === screen.height - 1) && window.innerWidth === screen.width;
-                }
-            },
-            'isLandscape': {
-                get: function(){
-                    var horizontal = screen.width > screen.height;
-                    if(isApple()){
-                        var cvp = this.clientViewport;
-                        horizontal = cvp.width > cvp.height;
-                    }
-
-                    return horizontal;
-                }
-            },
-            'isPortrait': {
-                get: function(){
-                    return !this.isLandscape;
-                }
-            },
-            'orientation': {
-                get: function(){
-                    if(screen.orientation)
-                        return screen.orientation;
-
-                    var mobile = this.isMobile;
-
-                    //polyfill para IE, EDGE no chromiun y iOS/MAC
-                    var orientation = {
-                        angle: mobile ? 90 : 0,
-                        type: 'landscape-primary'
-                    }
-
-                    if(this.isPortrait){
-                        orientation.angle = mobile ? 0 : 90;
-                        orientation.type = 'portrait-primary';
-                    }
-
-                    return orientation;
-                }
-            },
-            'addressBarSize': {
-                get: function(){
-                    if(this.isMobile){
-                        insertDiv();
-                        //return div.offsetHeight - document.documentElement.clientHeight;
-                        var height = (div.offsetHeight * 10) - window.outerHeight;
-                        //Corrección para navegador de Xiaomi
-                        height = height < 0 ? height * -1 : height;
-                        
-                        if(this.isFullScreen)
-                            height = 0;
-
-                        var width = screen.width;
-
-                        if(this.isMobile && isApple() && this.isLandscape)
-                            width = screen.height;
-
-                        return {
-                            width: width,
-                            height: height
-                        }
-                    }
-                        
-                    //isDesktop
-                    var availHeight = screen.availHeight;
-                            
-                    //alto que tiene la ventana del browser actualmente
-                    var browserHeight = window.outerHeight;
-        
-                    //browserHeight no puede ser mas alto que el alto disponible
-                    if(browserHeight > availHeight) 
-                        browserHeight = availHeight;
-
-                    var height = browserHeight - window.innerHeight;
-
-                    if(this.isFullScreen)
-                        height = 0;
-        
-                    return {
-                        width: window.outerWidth,
-                        height: height
-                    }
-                }
-            },
-            'scrollBarWidth': {
-                get: function(){
-                    insertDiv();
-                    return div.offsetWidth - div.clientWidth
-                }
-            },
-            'pixelRatio': {
-                get: function(){
-                    return window.devicePixelRatio || 1;
-                }
-            },
-            'resolution': {
-                get: function(){
-                    var dpr = this.pixelRatio;
-                    return {
-                        width: (screen.width * dpr) | 0,
-                        height: (screen.height * dpr) | 0
-                    }
-                }
-            },
-            'screenViewport': {
-                get: function(){
-
-                    var output = {
-                        width: screen.width,
-                        height: screen.height
-                    }
-
-                    if(this.isMobile && isApple() && this.isLandscape) {
-                        output.width = screen.height;
-                        output.height = screen.width;
-                    }
-
-                    return output;
-                }
-            },
-            'innerViewport': {
-                get: function(){
-                    if(this.isDesktop)
-                        return {
-                            width: window.innerWidth,
-                            height: window.innerHeight
-                        };
-
-                    // "isMobile"
-                    insertDiv();
-                    return {
-                        width: div.offsetWidth * 10,
-                        height: div.offsetHeight * 10
-                    }
-                }
-            },
-            'outerViewport': {
-                get: function(){
-                    return {
-                        width: window.outerWidth,
-                        height: window.outerHeight
-                    }
-                }
-            },
-            'clientViewport': {
-                get: function(){
-                    var doc = document.documentElement;
-                    return {
-                        width: doc.clientWidth,
-                        height: doc.clientHeight
-                    }
-                }
-            },
-            'availViewport': {
-                get: function(){
-
-                    var output = {
-                        width: screen.availWidth,
-                        height: screen.availHeight
-                    }
-
-                    if(this.isMobile && isApple() && this.isLandscape) {
-                        output.width = screen.availHeight;
-                        output.height = screen.availWidth;
-                    }
-
-                    return output;
-                }
-            },
-            'vh': {
-                get: function(){
-                    if(this.isDesktop)
-                        return window.innerHeight / 100;
-
-                    // "isMobile"
-                    insertDiv();
-                    //return div.offsetHeight / 100;
-                    return parseFloat(window.getComputedStyle(div).height) / 10;
-                }
-            },
-            'vw': {
-                get: function(){
-                    if(this.isDesktop)
-                        return  window.innerWidth / 100;
-
-                    // "isMobile"
-                    insertDiv();
-                    //return  div.offsetWidth / 100;
-                    return parseFloat(window.getComputedStyle(div).width) / 10;
-                }
-            },
-            'aspectRatio': {
-                get: function(){
-                    return ((screen.width / screen.height) * 1000 | 0) / 1000;
-                }
-            },
-            'screenSize': {
-                get: function(){
-                    var Div = document.createElement('div');
-                    Div.style.position = "absolute";
-                    Div.style.zIndex = "-1";
-                    Div.style.height = "1in";
-                    //Div.style.width = "1in";
-                    if(this.isMobile)
-                        Div.style.width = "4.15cm";  //prueba   //numero magico
-                    else
-                        Div.style.width = "3.725cm";  //prueba   //numero magico
-                    Div.style.top = "0";
-                    Div.style.left = "0";
-                    //Div.style.border = "1px solid"
-
-                    document.body.appendChild(Div);
-                    
-                    // 1 pulgada = X pixeles
-                    var dpr = this.pixelRatio;
-                    var in1 = parseFloat(window.getComputedStyle(Div).width) * dpr;
-
-                    var widthPx = screen.width * dpr;
-                    var heightPx = screen.height * dpr;
-
-                    var realWidth = widthPx / in1;
-                    var realHeight = heightPx / in1;
-                    var hypotenuse = Math.sqrt(realWidth*realWidth + realHeight*realHeight);
-
-                    setTimeout(function() { 
-                        document.body.removeChild(Div);
-                    }, 100);
-                    
-                    return {
-                        width: Math.floor(realWidth * 100) / 100,
-                        height: Math.floor(realHeight * 100) / 100,
-                        diagonal: Math.floor(hypotenuse * 100) / 100
-                    }
-                }
-            },
-            'openFullScreen': {
-                value: function() {
-                    var elem = document.documentElement;
-
-                    if (elem.requestFullscreen)
-                        elem.requestFullscreen();
-                    else if (elem.mozRequestFullScreen) /* Firefox */
-                        elem.mozRequestFullScreen();
-                    else if (elem.webkitRequestFullscreen) /* Chrome, Safari and Opera */
-                        elem.webkitRequestFullscreen();
-                    else if (elem.msRequestFullscreen) /* IE/Edge */
-                        elem.msRequestFullscreen();
-                },
-                writable: false
-            },
-            'closeFullScreen': {
-                value: function(){
-                    var doc = document;
-                    if (doc.exitFullscreen)
-                        doc.exitFullscreen();
-                    else if (doc.mozCancelFullScreen) /* Firefox */
-                        doc.mozCancelFullScreen();
-                    else if (doc.webkitExitFullscreen) /* Chrome, Safari and Opera */
-                        doc.webkitExitFullscreen();
-                    else if (doc.msExitFullscreen) /* IE/Edge */
-                        doc.msExitFullscreen();
-                },
-                writable: false
-            },
-            'fullScreen': {
-                get: function(){
-                    var that = this;
-
-                    return function(){
-                        if(that.isFullScreen)
-                            that.closeFullScreen();
-                        else
-                            that.openFullScreen();
-                    }
-                }
-            },
-            'workers': {
-                get: function(){
-                    return window.navigator.hardwareConcurrency || 2;
+                return { 
+                    width: that.isLandscape && IS_APPLE? SCREEN.height : SCREEN.width,
+                    height: full? 0 : height 
                 }
             }
-        });
 
-        return Device;
+            //isDesktop
+            var availHeight = SCREEN.availHeight;
+                            
+            //alto que tiene la ventana del browser actualmente
+            //browserHeight no puede ser mas alto que el alto disponible
+            var browserHeight = outerHeight > availHeight? availHeight : outerHeight;
 
-    })(document),
-    writable: false
-});
+            return {
+                width: innerViewport.width,
+                height: full? 0 : browserHeight - innerHeight
+            }
+        },
+
+        get scrollBar(){
+            return {
+                X: {
+                    width: innerWidth,
+                    height: innerHeight - DOC_ELEMENT.clientHeight,
+                    position: DOC_ELEMENT.scrollLeft,
+                    maxPosition: DOC_ELEMENT.scrollWidth - DOC_ELEMENT.clientWidth
+                },
+
+                Y: {
+                    width: innerWidth - DOC_ELEMENT.clientWidth,
+                    height: innerHeight,
+                    position: DOC_ELEMENT.scrollTop,
+                    maxPosition: DOC_ELEMENT.scrollHeight - DOC_ELEMENT.clientHeight
+                }
+            }
+        },
+
+        get orientation(){
+            if(SCREEN.orientation)
+                return SCREEN.orientation;
+
+            //polyfill para IE, EDGE Legacy y iOS
+            var mobile = this.isMobile;
+
+            return this.isPortrait?
+                { angle: mobile? 0 : 90, type: 'portrait-primary' }
+                :
+                { angle: mobile? 90 : 0, type: 'landscape-primary' }
+        },
+
+        get pixelRatio(){
+            return window.devicePixelRatio || 1;
+        },
+
+        get workers(){
+            return window.navigator.hardwareConcurrency || 2;
+        },
+
+    //#region 
+
+        get screenSize(){
+            var DIV = document.createElement('div');
+            DIV.style.width = this.isMobile? '4.15cm' : '3.725cm';  //Numeros magicos
+
+            HEAD.appendChild(DIV);
+
+            var dpr = this.pixelRatio;
+            var in_1 = parseFloat(getComputedStyle(DIV).width) * dpr;
+            
+            HEAD.removeChild(DIV);
+
+            var realWidth = SCREEN.width * dpr / in_1;
+            var realHeight = SCREEN.height * dpr / in_1;
+            var hypotenuse = Math.sqrt(realWidth * realWidth + realHeight * realHeight);
+
+            return {
+                width: Math.floor(realWidth * ONE_HUNDRED) / ONE_HUNDRED,
+                height: Math.floor(realHeight * ONE_HUNDRED) / ONE_HUNDRED,
+                diagonal: Math.floor(hypotenuse * ONE_HUNDRED) / ONE_HUNDRED
+            }
+        }
+
+    //#endregion
+
+    }
+
+})(window, document);
 
 if(!Device.isSafeConnection)
     console.error('this is not a secure connection (https or file)');
