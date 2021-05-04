@@ -61,7 +61,6 @@ or
 | `availViewport` | returns an object of the form { width, height } which are the numerical values in pixels which is the viewport available for rendering |
 | `vh` | returns a numeric value that is 1% of the height of the innerViewport |
 | `vW` | returns a numeric value that is 1% of the width of the innerViewport |
-| `aspectRatio` | returns a numeric value that is the current aspect ratio of the screen |
 | `screenSize` | returns an object of the form {width, height, diagonal}, which are an estimate in inches of the width, height and diagonal of the device's physical screen respectively |
 | `workers`| returns a number that is the number of workers that the device has |
 
@@ -156,7 +155,6 @@ or
 | `availViewport` | devuelve un objeto de la forma { width, height } el cual son los valores numericos en pixeles el cual es el viewport disponible para renderizar |
 | `vh` | devuelve un valor numerico que es el 1% del alto del innerViewport |
 | `vW` | devuelve un valor numerico que es el 1% del ancho del innerViewport |
-| `aspectRatio` | devuelve un valor numerico que es la relación de aspecto actual de la pantalla |
 | `screenSize` | devuelve un objeto de la forma { width, height, diagonal }, que son un estima en pulgadas del ancho, alto y diagonal de la pantalla fisica del dispositivo respectivamente |
 | `workers`| devuelve un numero que es la cantidad de workers que posee el dispositivo |
 
