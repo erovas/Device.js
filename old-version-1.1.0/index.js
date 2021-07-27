@@ -48,29 +48,6 @@
 
     function setResize(){
 
-        //#region OS
-
-        var OS = DEV.OS;
-        OSName.innerText = OS.name;
-        OSVersion.innerText = OS.version;
-
-        //#endregion
-
-        //#region browser
-
-        var browser = DEV.browser;
-        browserName.innerText = browser.name;
-        browserMajor.innerText = browser.major;
-        browserVersion.innerText = browser.version;
-
-        //#endregion
-
-        //#region CPU
-
-        CPU.innerText = DEV.CPU + ' bit';
-
-        //#endregion
-
         //#region Type
 
         isMobile.innerText = DEV.isMobile;
@@ -111,6 +88,14 @@
 
         //#endregion
 
+        //#region screenSize
+
+        wscreenSize.innerText = DEV.screenSize.width + 'inch';
+        hscreenSize.innerText = DEV.screenSize.height + 'inch';
+        dscreenSize.innerText = DEV.screenSize.diagonal + 'inch';
+
+        //#endregion
+
         //#region orientation
 
         angle.innerText = DEV.orientation.angle + 'º';
@@ -125,8 +110,6 @@
         isFullScreen.innerText = DEV.isFullScreen;
         isPortrait.innerText = DEV.isPortrait;
         isLandscape.innerText = DEV.isLandscape;
-        isTouchScreen.innerText = DEV.isTouchScreen;
-        touchPoints.innerText = DEV.touchPoints;
         workers.innerText = DEV.workers;
 
         //#endregion

@@ -49,6 +49,7 @@ or
 | `isFullScreen`| true if the device is in full screen mode |
 | `isLandscape`| true if the device is in landscape screen mode |
 | `isPortrait`| true if the device is in portrait screen mode |
+| `isTouchScreen`| true if the device has touch screen |
 | `orientation`| returns an object of the form { angle: 0º, type: 'landscape-primary' } where "angle" is the angle of the browser, "type" the orientation type name |
 | `addressBar`| returns an object of the form { width, height } which are the numerical values in pixels of the browser's address bar |
 | `scrollBar` | returns an object of the form { X: { width, height, position, maxPosition }, Y:{ width, height, position, maxPosition } } all of them in pixels |
@@ -61,10 +62,28 @@ or
 | `availViewport` | returns an object of the form { width, height } which are the numerical values in pixels which is the viewport available for rendering |
 | `vh` | returns a numeric value that is 1% of the height of the innerViewport |
 | `vW` | returns a numeric value that is 1% of the width of the innerViewport |
-| `screenSize` | returns an object of the form {width, height, diagonal}, which are an estimate in inches of the width, height and diagonal of the device's physical screen respectively |
 | `workers`| returns a number that is the number of workers that the device has |
+| `touchPoints`| returns a number that is the number touch points the device has |
+| `OS` | returns an object of the form { name, version } which are the name and version of operating system |
+| `browser` | returns an object of the form { name, major, version } which are the name and version of browser |
+| `CPU`| returns a number that is the CPU architecture |
 
 ## Changelog
+Version 1.2.0 - new properties
+
+Added:
+- isTouchScreen
+- touchPoints
+- CPU
+- OS
+- browser
+
+Deleted:
+- screenSize
+
+You can find the Version 1.1.0 in 'old-version-1.1.0' folder in this repository.
+
+
 Version 1.1.0 - Refactoring
 
 Deleted:
@@ -74,8 +93,8 @@ Deleted:
 - aspectRatio
 
 Modified:
-- addressBarSize TO addressBar
-- scrollBarWidth TO scrollBar
+-addressBarSize TO addressBar
+-scrollBarWidth TO scrollBar
 
 You can find the Version 1.0.0 in 'old-version' folder in this repository.
 
@@ -143,6 +162,7 @@ or
 | `isFullScreen`| true si el dispositivo está en modo pantalla completa |
 | `isLandscape`| true si el dispositivo está en modo pantalla landscape |
 | `isPortrait`| true si el dispositivo está en modo pantalla portrait |
+| `isTouchScreen`| true si el dispositivo tiene una pantalla tactil |
 | `orientation`| devuelve un objeto de la forma { angle: 0º, type: 'landscape-primary' } en donde "angle" es el angulo que tiene el navegador, "type" el nombre de tipo de orientación |
 | `addressBar`| devuelve un objeto de la forma { width, height } el cual son los valores numericos en pixeles de la barra de direcciones del navegador |
 | `scrollBar` | devuelve un objeto de la forma { X: { width, height, position, maxPosition }, Y:{ width, height, position, maxPosition } } todos ellos en píxeles|
@@ -155,13 +175,31 @@ or
 | `availViewport` | devuelve un objeto de la forma { width, height } el cual son los valores numericos en pixeles el cual es el viewport disponible para renderizar |
 | `vh` | devuelve un valor numerico que es el 1% del alto del innerViewport |
 | `vW` | devuelve un valor numerico que es el 1% del ancho del innerViewport |
-| `screenSize` | devuelve un objeto de la forma { width, height, diagonal }, que son un estima en pulgadas del ancho, alto y diagonal de la pantalla fisica del dispositivo respectivamente |
 | `workers`| devuelve un numero que es la cantidad de workers que posee el dispositivo |
+| `touchPoints`| devuelve un numero que es la cantidad de puntos tactiles que posee el dispositivo |
+| `OS` | devuelve un objeto de la forma { name, version } el cual es el nombre y version del sistema operativo |
+| `browser` | devuelve un objeto de la forma { name, major, version } el cual es el nombre y version del navegador |
+| `CPU`| devuelve un numero que es la arquitectura del CPU |
 
 ## Registro de cambios
+Version 1.2.0 - nuevas propiedades
+
+Agregado:
+- isTouchScreen
+- touchPoints
+- CPU
+- OS
+- browser
+
+Eliminado:
+- screenSize
+
+Puede encontrar la Versión 1.1.0 en la carpeta 'old-version-1.1.0' en este repositorio.
+
 Version 1.1.0 - Refactorzación
 
 Eliminado:
+
 - openFullScreen()
 - closeFullScreen()
 - fullScreen()

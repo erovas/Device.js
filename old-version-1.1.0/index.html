@@ -14,56 +14,17 @@
 
     <title>Device.js</title>
 
-    <link rel="icon" href="Device-favicon.png" type="image/png" sizes="16x16">
-    <link href="normalize.min.css" rel="stylesheet">
+    <link rel="icon" href="/Device-favicon.png" type="image/png" sizes="16x16">
+    <link href="/normalize.min.css" rel="stylesheet">
     <link href="index.css" rel="stylesheet">
 
-    <script src="Device.min.js"></script>
+    <script src="Device.js"></script>
 </head>
 <body>
 
     <a href="https://github.com/erovas/Device.js">
         <h1>Device.js</h1>
     </a>
-
-    <table>
-        <tr>
-            <th colspan="2">Operating System (OS)</th>
-        </tr>
-        <tr>
-            <td>name</td>
-            <td>version</td>
-        </tr>
-        <tr>
-            <td id="OSName"></td>
-            <td id="OSVersion"></td>
-        </tr>
-    </table>
-
-    <table>
-        <tr>
-            <th colspan="3">browser</th>
-        </tr>
-        <tr>
-            <td>name</td>
-            <td>major</td>
-            <td>version</td>
-        </tr>
-        <tr>
-            <td id="browserName"></td>
-            <td id="browserMajor"></td>
-            <td id="browserVersion"></td>
-        </tr>
-    </table>
-
-    <table>
-        <tr>
-            <th>Architecture (CPU)</th>
-        </tr>
-        <tr>
-            <td id="CPU"></td>
-        </tr>
-    </table>
 
     <table>
         <tr>
@@ -197,6 +158,22 @@
 
     <table>
         <tr>
+            <th colspan="3">screenSize</th>
+        </tr>
+        <tr>
+            <td>width</td>
+            <td>height</td>
+            <td>diagonal</td>
+        </tr>
+        <tr>
+            <td id="wscreenSize"></td>
+            <td id="hscreenSize"></td>
+            <td id="dscreenSize"></td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
             <th colspan="2">orientation</th>
         </tr>
         <tr>
@@ -233,14 +210,6 @@
         <tr>
             <td>isLandscape</td>
             <td id="isLandscape"></td>
-        </tr>
-        <tr>
-            <td>isTouchScreen</td>
-            <td id="isTouchScreen"></td>
-        </tr>
-        <tr>
-            <td>touchPoints</td>
-            <td id="touchPoints"></td>
         </tr>
         <tr>
             <td>workers</td>

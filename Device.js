@@ -1,5 +1,5 @@
 /*!
- * Device.js v1.1.0
+ * Device.js v1.2.0
  * [Back-compatibility: IE9+]
  * Copyright (c) 2021, Emanuel Rojas Vásquez
  * BSD 3-Clause License
@@ -12,18 +12,15 @@
     if(window[DEVICE])
         return console.error(DEVICE + '.js has already been defined');
 
-    var HEAD = document.head;
-
     var DIV_REFERENCE = document.createElement('div');
     DIV_REFERENCE.style.cssText = 'height:10vh;width:10vw;border:0;padding:0';
-    HEAD.appendChild(DIV_REFERENCE);
+    document.head.appendChild(DIV_REFERENCE);
 
     var SCREEN = screen;
     var ONE_HUNDRED = 100;
     var DOC_ELEMENT = document.documentElement;
-    var IS_APPLE = /iPad Simulator|iPhone Simulator|iPod Simulator|iPad|iPhone|iPod/i.test(navigator.platform) || /Mac/i.test(navigator.userAgent);
+    var IS_APPLE = /iP(ad Simulator|hone Simulator|od Simulator|ad|hone|od)/i.test(navigator.platform) || /Mac/i.test(navigator.userAgent);
     var IS_XIAOMI = /XiaoMi|MiuiBrowser/i.test(navigator.userAgent); //Android
-    var IS_FIREFOX_ANDROID = /Firefox/i.test(navigator.userAgent);
 
     window[DEVICE] = {
 
@@ -39,8 +36,8 @@
         },
 
         get isMobile(){
-            var userAgent = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            var trick = SCREEN.availHeight == SCREEN.height && SCREEN.availWidth == SCREEN.width && outerHeight - innerHeight == 0 && !this.isFullScreen;
+            var userAgent = /Android|webOS|iP(hone|ad|od)|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            var trick = SCREEN.availHeight == SCREEN.height && SCREEN.availWidth == SCREEN.width && outerHeight - innerHeight == 0 && !this.isFullScreen;  //Detect android only
             return userAgent || trick;
         },
 
@@ -62,6 +59,10 @@
 
         get isPortrait(){
             return !this.isLandscape;
+        },
+
+        get isTouchScreen(){
+            return 'ontouchstart' in DOC_ELEMENT || this.touchPoints > 0;
         },
 
     //#endregion
@@ -128,7 +129,7 @@
             
             if(that.isMobile){
 
-                var height = IS_XIAOMI || IS_FIREFOX_ANDROID || IS_APPLE?
+                var height = IS_XIAOMI || IS_APPLE || /Firefox/i.test(navigator.userAgent)?
                     innerViewport.height - innerHeight
                     :
                     innerViewport.height - outerHeight;
@@ -192,27 +193,189 @@
             return window.navigator.hardwareConcurrency || 2;
         },
 
+        get touchPoints(){
+            return navigator.maxTouchPoints || navigator.msMaxTouchPoints || 0;
+        },
+
     //#region 
 
-        get screenSize(){
-            var DIV = document.createElement('div');
-            DIV.style.width = this.isMobile? '4.15cm' : '3.725cm';  //Numeros magicos
+        get CPU(){
+            return /WOW64|Win64/i.test(navigator.userAgent)? 64 : 32;
+        },
 
-            HEAD.appendChild(DIV);
+        get OS(){
+            var user_agent = navigator.userAgent;
+            var win = 'Windows';
+            var mac = 'Mac';
+            var OS_name = 'unknown';
+            var OS_version = '-';
+            var clientStrings = [
+                {s: win + ' 10', r:/(Windows 10.0|Windows NT 10.0)/},
+                {s: win + ' 8.1', r:/(Windows 8.1|Windows NT 6.3)/},
+                {s: win + ' 8', r:/(Windows 8|Windows NT 6.2)/},
+                {s: win + ' 7', r:/(Windows 7|Windows NT 6.1)/},
+                {s: win + ' Vista', r:/Windows NT 6.0/},
+                {s: win + ' Server 2003', r:/Windows NT 5.2/},
+                {s: win + ' XP', r:/(Windows NT 5.1|Windows XP)/},
+                {s: win + ' 2000', r:/(Windows NT 5.0|Windows 2000)/},
+                {s: win + ' ME', r:/(Win 9x 4.90|Windows ME)/},
+                {s: win + ' 98', r:/(Windows 98|Win98)/},
+                {s: win + ' 95', r:/(Windows 95|Win95|Windows_95)/},
+                {s: win + ' NT 4.0', r:/(Windows NT 4.0|WinNT4.0|WinNT|Windows NT)/},
+                {s: win + ' CE', r:/Windows CE/},
+                {s: win + ' 3.11', r:/Win16/},
+                {s:'Android', r:/Android/},
+                {s:'Open BSD', r:/OpenBSD/},
+                {s:'Sun OS', r:/SunOS/},
+                {s:'Chrome OS', r:/CrOS/},
+                {s:'Linux', r:/(Linux|X11(?!.*CrOS))/},
+                {s:'iOS', r:/(iP(hone|ad|od))/},
+                {s: mac + ' OS X', r:/Mac OS X/},
+                {s: mac + ' OS', r:/(Mac OS|MacPPC|MacIntel|Mac_PowerPC|Macintosh)/},
+                {s:'QNX', r:/QNX/},
+                {s:'UNIX', r:/UNIX/},
+                {s:'BeOS', r:/BeOS/},
+                {s:'OS/2', r:/OS\/2/},
+                {s:'Search Bot', r:/(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask Jeeves\/Teoma|ia_archiver)/}
+            ];
 
-            var dpr = this.pixelRatio;
-            var in_1 = parseFloat(getComputedStyle(DIV).width) * dpr;
-            
-            HEAD.removeChild(DIV);
+            //Obtener el nombre del OS
+            for (var id in clientStrings) {
+                var cs = clientStrings[id];
+                if (cs.r.test(user_agent)) {
+                    OS_name = cs.s;
+                    break;
+                }
+            }
 
-            var realWidth = SCREEN.width * dpr / in_1;
-            var realHeight = SCREEN.height * dpr / in_1;
-            var hypotenuse = Math.sqrt(realWidth * realWidth + realHeight * realHeight);
+            //Obtener version del OS
+            if (/Windows/.test(OS_name)) {
+                OS_version = /Windows (.*)/.exec(OS_name)[1];
+                OS_name = 'Windows';
+            }
+
+            switch (OS_name) {
+                case  mac + ' OS':
+                case  mac + ' OS X':
+                case 'Android':
+                    OS_version = /(?:Android|Mac OS|Mac OS X|MacPPC|MacIntel|Mac_PowerPC|Macintosh) ([\.\_\d]+)/.exec(user_agent)[1];
+                    break;
+
+                case 'iOS':
+                    OS_version = /OS (\d+)_(\d+)_?(\d+)?/.exec(navigator.appVersion);
+                    OS_version = OS_version[1] + '.' + OS_version[2] + '.' + (OS_version[3] | 0);
+                    break;
+            }
 
             return {
-                width: Math.floor(realWidth * ONE_HUNDRED) / ONE_HUNDRED,
-                height: Math.floor(realHeight * ONE_HUNDRED) / ONE_HUNDRED,
-                diagonal: Math.floor(hypotenuse * ONE_HUNDRED) / ONE_HUNDRED
+                name: OS_name,
+                version: OS_version
+            }
+        },
+
+        get browser(){
+            var user_agent = navigator.userAgent;
+            var name = 'Unknown';
+            var version = '0.0.0'; 
+            var major = 0;
+            var verOffset;
+
+            if(this.isMobile && IS_APPLE){
+
+                if((verOffset = user_agent.indexOf('OPT')) > -1){
+                    name = 'Opera';
+                    version = user_agent.substring(verOffset + 4);
+                }
+                else if((verOffset = user_agent.indexOf('FxiOS')) > -1){
+                    name = 'Firefox';
+                    version = user_agent.substring(verOffset + 6);
+                }
+                else if((verOffset = user_agent.indexOf('EdgiOS')) > -1){
+                    name = 'Edge';
+                    version = user_agent.substring(verOffset + 7);
+                }
+                else if((verOffset = user_agent.indexOf('CriOS')) > -1){
+                    name = 'Chrome';
+                    version = user_agent.substring(verOffset + 6);
+                }
+                else if((verOffset = user_agent.indexOf('Version')) > -1){
+                    name = 'Safari';
+                    version = user_agent.substring(verOffset + 8);
+                }
+            }
+            else {
+                //Basados en chromium (desktop y android)
+                if(!!window.chrome){
+
+                    if((verOffset = user_agent.indexOf('EdgA')) > -1){  //Android
+                        name = 'Edge';
+                        version = user_agent.substring(verOffset + 5);
+                    }
+                    else if((verOffset = user_agent.indexOf('Edg')) > -1){  //Desktop edge
+                        name = 'Edge';
+                        version = user_agent.substring(verOffset + 4);
+                    }
+                    else if(!!window.opr){
+                        name = 'Opera';
+                        version = user_agent.substring(user_agent.indexOf('OPR') + 4);
+                    }
+                    else if((verOffset = user_agent.indexOf('Chrome')) > -1){
+                        name = 'Chrome';
+                        version = user_agent.substring(verOffset + 7);
+                    }
+
+                }
+                else if(!!window.opr || !!window.opera){  //Old Opera
+                    name = 'Opera';
+                    version = user_agent.substring(user_agent.indexOf('Opera') + 6);
+                    if((verOffset = user_agent.indexOf('Version')) > -1)
+                        version = user_agent.substring(verOffset + 8);
+                }
+                else if(!!document.documentMode){
+                    name = 'Internet Explorer';
+                    if((verOffset = user_agent.indexOf('MSIE')) > -1)  // IE10 or less
+                        version = user_agent.substring(verOffset + 5);
+                    else  // IE11+
+                        version = user_agent.substring(user_agent.indexOf('rv:') + 3);
+                }
+                else if(!!window.StyleMedia){
+                    name = 'Edge Legacy';
+                    version = user_agent.substring(user_agent.indexOf('Edge') + 5);
+                }
+                else if(typeof InstallTrigger !== 'undefined'){
+                    name = 'Firefox';
+                    version = user_agent.substring(user_agent.indexOf('Firefox') + 8);
+                }
+                else if((verOffset = user_agent.indexOf('MiuiBrowser')) > -1){
+                    name = 'Mi Browser';
+                    version = user_agent.substring(verOffset + 12);
+                }
+                else if((verOffset = user_agent.indexOf('Mint Browser')) > -1){
+                    name = 'Mint Browser';
+                    version = user_agent.substring(verOffset + 13);
+                }
+                else if(/constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification))){
+                    name = 'Safari';
+                    version = user_agent.substring(user_agent.indexOf('Safari') + 7);
+                    if((verOffset = user_agent.indexOf('Version')) > -1)
+                        version = user_agent.substring(verOffset + 8);
+                }
+            }
+
+            if((verOffset = version.indexOf(';')) > -1) version = version.substring(0, verOffset);
+            if((verOffset = version.indexOf(' ')) > -1) version = version.substring(0, verOffset);
+            if((verOffset = version.indexOf(')')) > -1) version = version.substring(0, verOffset);
+
+            major = parseInt('' + version, 10);
+            if(isNaN(major)){
+                version = + parseFloat(navigator.appVersion);
+                major = parseInt(navigator.appVersion, 10);
+            }
+
+            return {
+                name: name,
+                version: version,
+                major: major
             }
         }
 
