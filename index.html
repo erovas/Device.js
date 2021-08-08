@@ -19,12 +19,98 @@
     <link href="index.css" rel="stylesheet">
 
     <script src="Device.min.js"></script>
+
+    <!--
+    <div id="dpi" style="height: 1in; width: 1in; left: 100%; position: fixed; top: 100%;"></div>
+    <b>Your Device Screen Size in Centimeters <br /><br /><h3>If Your Device is :<br />
+    -->
+
 </head>
 <body>
 
     <a href="https://github.com/erovas/Device.js">
         <h1>Device.js</h1>
     </a>
+
+    
+    <!--
+    <script>
+        var dpi_x = document.getElementById('dpi').offsetWidth;
+        var dpi_xx = parseFloat(getComputedStyle(document.getElementById('dpi')).width);
+        var dpi_y = document.getElementById('dpi').offsetHeight;
+        var dpi_yy = parseFloat(getComputedStyle(document.getElementById('dpi')).height);
+        var width = screen.width / dpi_x /  window.devicePixelRatio;
+        var height = screen.height / dpi_y /  window.devicePixelRatio;
+
+        document.write('Desktop Aspect Ratio :  ' + (Math.max(width, height) / Math.min(width, height)) + ' <br>');
+        document.write('Desktop dpi_x :  ' + dpi_x + ' <br>');
+        document.write('Desktop dpi_xx :  ' + dpi_xx + ' <br>');
+        document.write('Desktop dpi_y :  ' + dpi_y + ' <br>');
+        document.write('Desktop dpi_yy :  ' + dpi_yy + ' <br>');
+        document.write('Desktop Height :  ' + height + ' <br>');
+        document.write('Desktop Width :  ' + width + ' <br>');
+
+        var asd = 1.727  //BIEN - Probado en mi portatil con 15.9"
+        var widthMB2 = width * asd//Math.floor( width * 1.99)  ; //ratio for Android mobile and iPads
+        var heightMB2 = height * asd//Math.floor( height * 1.79) ; //ratio for Android mobile and iPads
+        document.write('<br>');
+        document.write('<hr>');
+        document.write('Desktop WINDOWS demo Size :  ' + (widthMB2 / 2.54) + '   x  ' + (heightMB2 / 2.54) + ' inch <br>');
+        document.write('Desktop WINDOWS aspect ratio :  ' + (widthMB2 / heightMB2) + ' <br>');
+        document.write('Desktop WINDOWS demo Size :  ' + (widthMB2) + '   x  ' + (heightMB2) + ' cm <br>');
+        document.write('Desktop WINDOWS demo diagonal :  ' + ( Math.sqrt(widthMB2 * widthMB2 + heightMB2 * heightMB2) / 2.54 ) + ' inch ');
+        document.write('<br>');
+
+        var asd2 = 3 //BIEN - Probado Iphone SE 2020 con pantalla 4.7"
+        var widthiPhone = width * asd2//Math.floor( width * 3.40)  ; //ratio for iPhone
+        var heightiPhone = height * asd2//Math.floor( height * 3.1) ; //ratio for iPhone
+        document.write('<br>');
+        document.write('<hr>');
+        document.write('Apple iPhones Size :  ' + (widthiPhone / 2.54) + '  x  ' + (heightiPhone / 2.54) + ' inch <br>');
+        document.write('Apple iPhones diagonal :  ' + ( Math.sqrt(widthiPhone*widthiPhone + heightiPhone * heightiPhone) / 2.54) + ' inch <br>');
+        document.write('Apple iPhones aspect ratio :  ' + ( Math.max(width, height) / Math.min(width, height) ) + ' <br>');
+        //document.write('Apple iPhones aspect ratio :  ' + ( Math.max(widthiPhone, heightiPhone) / Math.min(widthiPhone, heightiPhone) ) + ' inch <br>');
+        document.write('<br>');
+
+        var asd3 = 3.822  //BIEN - MAC air 13.3"
+        var widthMB3 = width * asd3//Math.floor( width * 1.99)  ; //ratio for Android mobile and iPads
+        var heightMB3 = height * asd3//Math.floor( height * 1.79) ; //ratio for Android mobile and iPads
+        document.write('<br>');
+        document.write('<hr>');
+        document.write('Desktop MAC demo Size :  ' + (widthMB3 / 2.54) + '   x  ' + (heightMB3 / 2.54) + ' inch <br>');
+        document.write('Desktop MAC aspect ratio :  ' + (widthMB3 / heightMB3) + '  <br>');
+        document.write('Desktop MAC demo Size :  ' + (widthMB3) + '   x  ' + (heightMB3) + ' cm <br>');
+        document.write('Desktop MAC demo diagonal :  ' + ( Math.sqrt(widthMB3 * widthMB3 + heightMB3 * heightMB3) / 2.54 ) + ' inch ');
+        document.write('<br><br>');
+
+        var qwerty = 3.656
+        var widthMB = width * qwerty//Math.floor( width * 1.79)  ; //ratio for Android mobile and iPads
+        var heightMB = height * qwerty//Math.floor( height * 1.79) ; //ratio for Android mobile and iPads
+        document.write('<br />');
+        document.write('<hr>');
+        document.write('Android Mobile Size :  ' + (widthMB / 2.54) + '   x  ' + (heightMB / 2.54) + ' inch <br>');
+        document.write('Android Mobile Size :  ' + (widthMB) + '   x  ' + (heightMB) + ' cm <br>');
+        document.write('Android Mobile diagonal :  ' + ( Math.sqrt(widthMB * widthMB + heightMB * heightMB) / 2.54 ) + ' inch ');
+        document.write('<br />');
+        
+
+        
+        /*
+        var widthCM =  Math.ceil( width * 3.2) ;
+        var heightCM =  Math.ceil( height * 2.98) ;
+        document.write('<br />');
+        document.write('<hr>');
+        document.write('Desktop / Laptop Size :   ' + (widthCM / 2.54) + '  x  ' + (heightCM / 2.54) + ' inch <br />');
+        document.write('Desktop / Laptop diagonal :   ' + ( Math.sqrt(widthCM * widthCM + heightCM * heightCM) / 2.54 ) + ' inch <br />');
+
+        document.write('<br />');
+        document.write('<hr>');
+        document.write('Apple iPad Size :  ' + (widthMB / 2.54) + '  x  ' + (heightMB / 2.54) + ' inch <br>');
+        document.write('Apple iPad diagonal :  ' + ( Math.sqrt(widthMB * widthMB + heightMB * heightMB) / 2.54 ) + ' inch ');
+        document.write('<br /> ');
+        */
+    </script>
+    -->
 
     <table>
         <tr>
@@ -129,6 +215,16 @@
 
     <table>
         <tr>
+            <td style="width: 55%;">open keyboard (mobile)</td>
+            <td> <input style="width: 90%;"> </td>
+        </tr>
+        <tr>
+            
+        </tr>
+    </table>
+
+    <table>
+        <tr>
             <th colspan="2">addressBar</th>
         </tr>
         <tr>
@@ -182,16 +278,6 @@
                     <input type="checkbox" id="checkScrollY">
                 </label>
             </td>
-        </tr>
-    </table>
-
-    <table>
-        <tr>
-            <td style="width: 55%;">open keyboard (mobile)</td>
-            <td> <input style="width: 90%;"> </td>
-        </tr>
-        <tr>
-            
         </tr>
     </table>
 

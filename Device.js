@@ -1,5 +1,5 @@
 /*!
- * Device.js v1.2.0
+ * Device.js v1.2.1
  * [Back-compatibility: IE9+]
  * Copyright (c) 2021, Emanuel Rojas Vásquez
  * BSD 3-Clause License
@@ -19,8 +19,15 @@
     var SCREEN = screen;
     var ONE_HUNDRED = 100;
     var DOC_ELEMENT = document.documentElement;
-    var IS_APPLE = /iP(ad Simulator|hone Simulator|od Simulator|ad|hone|od)/i.test(navigator.platform) || /Mac/i.test(navigator.userAgent);
-    var IS_XIAOMI = /XiaoMi|MiuiBrowser/i.test(navigator.userAgent); //Android
+    var NAVIGATOR = navigator;
+    var IS_APPLE = /iP(ad Simulator|hone Simulator|od Simulator|ad|hone|od)/i.test(NAVIGATOR.platform) || /Mac/i.test(NAVIGATOR.userAgent);
+    var IS_XIAOMI = /XiaoMi|MiuiBrowser/i.test(NAVIGATOR.userAgent); //Android
+    var ORIENTATION_STRING = {
+        a: 'portrait-primary',
+        b: 'portrait-secondary',
+        c: 'landscape-primary',
+        d: 'landscape-secondary'
+    }
 
     window[DEVICE] = {
 
@@ -36,7 +43,7 @@
         },
 
         get isMobile(){
-            var userAgent = /Android|webOS|iP(hone|ad|od)|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            var userAgent = /Android|webOS|iP(hone|ad|od)|BlackBerry|IEMobile|Opera Mini/i.test(NAVIGATOR.userAgent);
             var trick = SCREEN.availHeight == SCREEN.height && SCREEN.availWidth == SCREEN.width && outerHeight - innerHeight == 0 && !this.isFullScreen;  //Detect android only
             return userAgent || trick;
         },
@@ -129,7 +136,7 @@
             
             if(that.isMobile){
 
-                var height = IS_XIAOMI || IS_APPLE || /Firefox/i.test(navigator.userAgent)?
+                var height = IS_XIAOMI || IS_APPLE || /Firefox/i.test(NAVIGATOR.userAgent)?
                     innerViewport.height - innerHeight
                     :
                     innerViewport.height - outerHeight;
@@ -176,13 +183,48 @@
             if(SCREEN.orientation)
                 return SCREEN.orientation;
 
-            //polyfill para IE, EDGE Legacy y iOS
+            
+            var polyfill = window.orientation;
             var mobile = this.isMobile;
+            var out = {};
 
+            //iOS mobile and maybe another Device
+            if(polyfill !== undefined){
+                out.angle = polyfill;
+                if(polyfill === 0)
+                    out.type = mobile? ORIENTATION_STRING.a : ORIENTATION_STRING.c;
+                else if(polyfill === 90)
+                    out.type = mobile? ORIENTATION_STRING.c : ORIENTATION_STRING.a;
+                else if(polyfill === 180)
+                    out.type = mobile? ORIENTATION_STRING.b : ORIENTATION_STRING.d;
+                else { // polyfill === -90, must be 270 in Android
+                    out.type = mobile? ORIENTATION_STRING.d : ORIENTATION_STRING.b;
+                    out.angle = 270;
+                }
+                    
+
+                return out;
+            }
+            // Internet Explorer and old Firefox (Maybe EDGE Legacy)
+            else if( (polyfill = SCREEN.msOrientation || SCREEN.mozOrientation) !== undefined ){
+                out.type = polyfill;
+                if(polyfill === ORIENTATION_STRING.a)
+                    out.angle = 270;
+                else if(polyfill === ORIENTATION_STRING.b)
+                    out.angle = 90;
+                else if(polyfill === ORIENTATION_STRING.c)
+                    out.angle = 0;
+                else
+                    out.angle = 180;
+
+                return out;
+            }
+            
+            //Very old IE, EDGE Legacy and other
             return this.isPortrait?
-                { angle: mobile? 0 : 90, type: 'portrait-primary' }
+                { angle: mobile? 0 : 90, type: ORIENTATION_STRING.a }
                 :
-                { angle: mobile? 90 : 0, type: 'landscape-primary' }
+                { angle: mobile? 90 : 0, type: ORIENTATION_STRING.c }
         },
 
         get pixelRatio(){
@@ -190,21 +232,21 @@
         },
 
         get workers(){
-            return window.navigator.hardwareConcurrency || 2;
+            return NAVIGATOR.hardwareConcurrency || (IS_APPLE? 4 : 2);
         },
 
         get touchPoints(){
-            return navigator.maxTouchPoints || navigator.msMaxTouchPoints || 0;
+            return NAVIGATOR.maxTouchPoints || NAVIGATOR.msMaxTouchPoints || 0;
         },
 
     //#region 
 
         get CPU(){
-            return /WOW64|Win64/i.test(navigator.userAgent)? 64 : 32;
+            return /WOW64|Win64/i.test(NAVIGATOR.userAgent)? 64 : 32;
         },
 
         get OS(){
-            var user_agent = navigator.userAgent;
+            var user_agent = NAVIGATOR.userAgent;
             var win = 'Windows';
             var mac = 'Mac';
             var OS_name = 'unknown';
@@ -262,7 +304,7 @@
                     break;
 
                 case 'iOS':
-                    OS_version = /OS (\d+)_(\d+)_?(\d+)?/.exec(navigator.appVersion);
+                    OS_version = /OS (\d+)_(\d+)_?(\d+)?/.exec(NAVIGATOR.appVersion);
                     OS_version = OS_version[1] + '.' + OS_version[2] + '.' + (OS_version[3] | 0);
                     break;
             }
@@ -274,7 +316,7 @@
         },
 
         get browser(){
-            var user_agent = navigator.userAgent;
+            var user_agent = NAVIGATOR.userAgent;
             var name = 'Unknown';
             var version = '0.0.0'; 
             var major = 0;
@@ -368,8 +410,8 @@
 
             major = parseInt('' + version, 10);
             if(isNaN(major)){
-                version = + parseFloat(navigator.appVersion);
-                major = parseInt(navigator.appVersion, 10);
+                version = + parseFloat(NAVIGATOR.appVersion);
+                major = parseInt(NAVIGATOR.appVersion, 10);
             }
 
             return {
