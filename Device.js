@@ -1,5 +1,5 @@
 /*!
- * Device.js v1.2.1
+ * Device.js v1.2.2
  * [Back-compatibility: IE9+]
  * Copyright (c) 2021, Emanuel Rojas Vásquez
  * BSD 3-Clause License
@@ -13,8 +13,7 @@
         return console.error(DEVICE + '.js has already been defined');
 
     var DIV_REFERENCE = document.createElement('div');
-    DIV_REFERENCE.style.cssText = 'height:10vh;width:10vw;border:0;padding:0';
-    document.head.appendChild(DIV_REFERENCE);
+    
 
     var SCREEN = screen;
     var ONE_HUNDRED = 100;
@@ -28,6 +27,9 @@
         c: 'landscape-primary',
         d: 'landscape-secondary'
     }
+
+    DIV_REFERENCE.style.cssText = 'height:10vh;width:10vw;border:0;padding:0';
+    document.head.appendChild(DIV_REFERENCE);
 
     window[DEVICE] = {
 
@@ -70,6 +72,10 @@
 
         get isTouchScreen(){
             return 'ontouchstart' in DOC_ELEMENT || this.touchPoints > 0;
+        },
+
+        get isDarkMode(){
+            return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
         },
 
     //#endregion

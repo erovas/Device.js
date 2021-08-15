@@ -120,13 +120,14 @@
 
         //#region Miscelaneous
 
-        pixelRatio.innerText = DEV.pixelRatio;
+        isDark.innerText = DEV.isDarkMode;
         isSafe.innerText = DEV.isSafeConnection;
         isFullScreen.innerText = DEV.isFullScreen;
         isPortrait.innerText = DEV.isPortrait;
         isLandscape.innerText = DEV.isLandscape;
         isTouchScreen.innerText = DEV.isTouchScreen;
         touchPoints.innerText = DEV.touchPoints;
+        pixelRatio.innerText = DEV.pixelRatio;
         workers.innerText = DEV.workers;
 
         //#endregion
