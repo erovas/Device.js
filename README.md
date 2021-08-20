@@ -51,6 +51,7 @@ or
 | `isPortrait`| true if the device is in portrait screen mode |
 | `isTouchScreen`| true if the device has touch screen |
 | `isDarkMode`| true if the device browser is in Dark mode |
+| `isLightMode`| true if the device browser is in Light mode |
 | `orientation`| returns an object of the form { angle: 0º, type: 'landscape-primary' } where "angle" is the angle of the browser, "type" the orientation type name |
 | `addressBar`| returns an object of the form { width, height } which are the numerical values in pixels of the browser's address bar |
 | `scrollBar` | returns an object of the form { X: { width, height, position, maxPosition }, Y:{ width, height, position, maxPosition } } all of them in pixels |
@@ -70,6 +71,11 @@ or
 | `CPU`| returns a number that is the CPU architecture |
 
 ## Changelog
+
+Version 1.2.3 - new property
+
+Added
+- isLightMode
 
 Version 1.2.2 - new property, accurate polyfill
 
@@ -174,6 +180,7 @@ or
 | `isPortrait`| true si el dispositivo está en modo pantalla portrait |
 | `isTouchScreen`| true si el dispositivo tiene una pantalla tactil |
 | `isDarkMode`| true si el browser del dispositivo está en modo oscuro |
+| `isLightMode`| true si el browser del dispositivo está en modo claro |
 | `orientation`| devuelve un objeto de la forma { angle: 0º, type: 'landscape-primary' } en donde "angle" es el angulo que tiene el navegador, "type" el nombre de tipo de orientación |
 | `addressBar`| devuelve un objeto de la forma { width, height } el cual son los valores numericos en pixeles de la barra de direcciones del navegador |
 | `scrollBar` | devuelve un objeto de la forma { X: { width, height, position, maxPosition }, Y:{ width, height, position, maxPosition } } todos ellos en píxeles|
@@ -193,6 +200,11 @@ or
 | `CPU`| devuelve un numero que es la arquitectura del CPU |
 
 ## Registro de cambios
+
+Version 1.2.3 - nueva propiedad
+
+Added
+- isLightMode
 
 Version 1.2.2 - nueva propiedad, polyfill preciso
 

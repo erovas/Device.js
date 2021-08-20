@@ -40,8 +40,8 @@
         scrollBarYWidth.innerText = DEV.scrollBar.Y.width + px;
         scrollBarXHeight.innerText = DEV.scrollBar.X.height + px;
         scrollBarYHeight.innerText = DEV.scrollBar.Y.height + px;
-        scrollBarXPosition.innerText = DEV.scrollBar.X.position + px;
-        scrollBarYPosition.innerText = DEV.scrollBar.Y.position + px;
+        scrollBarXPosition.innerText = ( ((DEV.scrollBar.X.position * 100) | 0) / 100 ) + px;
+        scrollBarYPosition.innerText = ( ((DEV.scrollBar.Y.position * 100) | 0) / 100 ) + px;
         scrollBarXMaxPosition.innerText = DEV.scrollBar.X.maxPosition + px;
         scrollBarYMaxPosition.innerText = DEV.scrollBar.Y.maxPosition + px;
     }
@@ -121,6 +121,7 @@
         //#region Miscelaneous
 
         isDark.innerText = DEV.isDarkMode;
+        isLight.innerText = DEV.isLightMode;
         isSafe.innerText = DEV.isSafeConnection;
         isFullScreen.innerText = DEV.isFullScreen;
         isPortrait.innerText = DEV.isPortrait;
@@ -150,7 +151,7 @@
 
     checkScrollX.onchange = function(){
         if(checkScrollX.checked)
-            BODY.style.width = '4000px';
+            BODY.style.width = '3000px';
         else
             BODY.style.width = '';
 

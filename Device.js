@@ -1,5 +1,5 @@
 /*!
- * Device.js v1.2.2
+ * Device.js v1.2.3
  * [Back-compatibility: IE9+]
  * Copyright (c) 2021, Emanuel Rojas Vásquez
  * BSD 3-Clause License
@@ -76,6 +76,10 @@
 
         get isDarkMode(){
             return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        },
+
+        get isLightMode(){
+            return !this.isDarkMode;
         },
 
     //#endregion
