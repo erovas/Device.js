@@ -203,7 +203,7 @@ or
 
 Version 1.2.3 - nueva propiedad
 
-Added
+Agregado
 - isLightMode
 
 Version 1.2.2 - nueva propiedad, polyfill preciso
